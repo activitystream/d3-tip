@@ -56,7 +56,7 @@
           scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft
 
       nodel.html(content + '<span class="d3-tip__pin"></span>')
-        .style({ opacity: 1, 'pointer-events': 'all' })
+        .style({ opacity: 1, 'pointer-events': 'all', display: 'block' })
 
       while(i--) nodel.classed(directions[i], false)
       coords = direction_callbacks.get(dir).apply(this)
@@ -73,7 +73,7 @@
     // Returns a tip
     tip.hide = function() {
       var nodel = getNodeEl()
-      nodel.style({ opacity: 0, 'pointer-events': 'none' })
+      nodel.style({ opacity: 0, 'pointer-events': 'none', display: 'none' })
       return tip
     }
 
@@ -265,7 +265,8 @@
         top: 0,
         opacity: 0,
         'pointer-events': 'none',
-        'box-sizing': 'border-box'
+        'box-sizing': 'border-box',
+        display: 'none'
       })
 
       return node.node()
