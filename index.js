@@ -22,7 +22,7 @@
   // Public - contructs a new tooltip
   //
   // Returns a tip
-  return function() {
+  return function(config) {
     var direction = d3_tip_direction,
         offset    = d3_tip_offset,
         html      = d3_tip_html,
@@ -64,6 +64,9 @@
         top: (coords.top +  poffset[0]) + scrollTop + 'px',
         left: (coords.left + poffset[1]) + scrollLeft + 'px'
       })
+      if (config.blur) {
+          nodel.selectAll(config.blur).classed('demo-blur', true)
+      }
       tip.nodel = nodel
       return tip
     }
