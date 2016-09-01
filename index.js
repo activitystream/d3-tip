@@ -54,12 +54,20 @@
           coords,
           scrollTop  = document.documentElement.scrollTop || document.body.scrollTop,
           scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft
-
+      if (config.blur) {
+          nodel.selectAll(config.blur).classed('demo-blur', true)
+      }
       nodel.html(content + '<span class="d3-tip__pin"></span>')
         .style({ opacity: 1, 'pointer-events': 'all', display: 'block' })
 
       while(i--) nodel.classed(directions[i], false)
+      if (config.blur) {
+          nodel.selectAll(config.blur).classed('demo-blur', true)
+      }
       coords = direction_callbacks.get(dir).apply(this)
+      if (config.blur) {
+          nodel.selectAll(config.blur).classed('demo-blur', true)
+      }
       nodel.classed(dir, true).style({
         top: (coords.top +  poffset[0]) + scrollTop + 'px',
         left: (coords.left + poffset[1]) + scrollLeft + 'px'
