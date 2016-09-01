@@ -64,7 +64,7 @@
         top: (coords.top +  poffset[0]) + scrollTop + 'px',
         left: (coords.left + poffset[1]) + scrollLeft + 'px'
       })
-
+      tip.nodel = nodel
       return tip
     }
 
