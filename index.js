@@ -23,6 +23,12 @@ function d3tip(config) {
         }
         rootElement.appendChild(node);
     }
+    tip.rootElement = function (root) {
+        if (root == null)
+            return rootElement;
+        rootElement = root;
+        return tip;
+    };
     // Public - show the tooltip on the screen
     //
     // Returns a tip
