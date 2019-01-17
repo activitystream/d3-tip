@@ -1,6 +1,6 @@
 {
   "name": "@activitystream/d3-tip",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Tooltips for d3 svg visualizations",
   "main": "index.js",
   "directories": {
