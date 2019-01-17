@@ -1,28 +1,35 @@
 {
-  "name": "d3-tip",
-  "version": "0.7.1",
+  "name": "@activitystream/d3-tip",
+  "version": "1.0.0",
   "description": "Tooltips for d3 svg visualizations",
-  "author": "Justin Palmer <justin@labratrevenge.com> (http://labratrevenge.com/d3-tip)",
   "main": "index.js",
   "directories": {
     "doc": "docs",
     "example": "examples"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc index.ts",
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Caged/d3-tip"
+    "url": "https://github.com/activitystream/d3-tip"
   },
   "keywords": [
     "d3",
     "tooltip"
   ],
-  "author": "Justin Palmer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Caged/d3-tip/issues"
+    "url": "https://github.com/activitystream/d3-tip/issues"
   },
-  "homepage": "https://github.com/Caged/d3-tip"
+  "homepage": "https://github.com/activitystream/d3-tip",
+  "devDependencies": {
+    "@types/d3": "3",
+    "prettier": "^1.15.3",
+    "typescript": "^3.2.2"
+  },
+  "peerDependencies": {
+    "d3": "3"
+  }
 }
