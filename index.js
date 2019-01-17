@@ -51,9 +51,10 @@ function d3tip(config) {
         var scrollLeft = document.documentElement.scrollLeft || rootElement.scrollLeft;
         nodel
             .html(content + '<span class="d3-tip__pin"></span>')
-            .style({ opacity: 1, "pointer-events": "all", display: "block" })
-            .selectAll(config.blur || "")
-            .classed("demo-blur", true);
+            .style({ opacity: 1, "pointer-events": "all", display: "block" });
+        if (config.blur) {
+            nodel.selectAll(config.blur).classed("demo-blur", true);
+        }
         while (i--)
             nodel.classed(directions[i], false);
         coords = direction_callbacks.get(dir).apply(this);
