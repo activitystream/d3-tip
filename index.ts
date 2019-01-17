@@ -3,7 +3,12 @@ import * as d3 from "d3"
 interface TipOptions {
   /** elements to be blurred */
   blur?: string
-  rootElement?: HTMLElement
+}
+
+declare global {
+  interface Document {
+    fullscreenElement: HTMLElement | null
+  }
 }
 
 // One of n(north), s(south), e(east), or w(west), nw(northwest),
@@ -19,7 +24,7 @@ export default function d3tip<T>(config: TipOptions = {}) {
   let offset: OffsetFunction<T> = d3_tip_offset
   let html: HtmlFunction<T> = d3_tip_html
   let node = initNode()
-  let rootElement = config.rootElement || document.body
+  const rootElement = () => document.fullscreenElement || document.body
   let svg: SVGSVGElement
   let point: DOMPoint
   let target: SVGElement
@@ -34,13 +39,23 @@ export default function d3tip<T>(config: TipOptions = {}) {
     if (!node) {
       return
     }
-    rootElement.appendChild(node)
+    rootElement().appendChild(node)
   }
 
-  tip.rootElement = function(root?: HTMLElement) {
-    if (root == null) return rootElement
-    rootElement = root
-    return tip
+  function getScrollPosition() {
+    if (document.fullscreenElement) {
+      return {
+        scrollTop: document.fullscreenElement.scrollTop,
+        scrollLeft: document.fullscreenElement.scrollLeft,
+      }
+    } else {
+      return {
+        scrollTop:
+          rootElement().scrollTop || document.documentElement.scrollTop,
+        scrollLeft:
+          rootElement().scrollLeft || document.documentElement.scrollLeft,
+      }
+    }
   }
 
   // Public - show the tooltip on the screen
@@ -61,11 +76,7 @@ export default function d3tip<T>(config: TipOptions = {}) {
     const nodel = getNodeEl()
     let i = directions.length
     let coords
-    const scrollTop =
-      document.documentElement.scrollTop || rootElement.scrollTop
-    const scrollLeft =
-      document.documentElement.scrollLeft || rootElement.scrollLeft
-
+    const { scrollTop, scrollLeft } = getScrollPosition()
     nodel
       .html(content + '<span class="d3-tip__pin"></span>')
       .style({ opacity: 1, "pointer-events": "all", display: "block" })
@@ -200,7 +211,7 @@ export default function d3tip<T>(config: TipOptions = {}) {
   function direction_n() {
     var bbox = getScreenBBox()
     // check if the tooltip will go overflow right side and left side of the page
-    var screenRect = rootElement.getBoundingClientRect()
+    var screenRect = rootElement().getBoundingClientRect()
     if (bbox.n.x + node.offsetWidth / 2 > screenRect.width) {
       const diff = bbox.n.x + node.offsetWidth / 2 - screenRect.width
       ;(node.children[node.children.length - 1] as HTMLElement).style.left =
@@ -309,7 +320,7 @@ export default function d3tip<T>(config: TipOptions = {}) {
     if (node === null) {
       node = initNode()
       // re-add node to DOM
-      rootElement.appendChild(node)
+      rootElement().appendChild(node)
     }
     return d3.select(node)
   }

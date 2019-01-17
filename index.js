@@ -7,7 +7,7 @@ function d3tip(config) {
     var offset = d3_tip_offset;
     var html = d3_tip_html;
     var node = initNode();
-    var rootElement = config.rootElement || document.body;
+    var rootElement = function () { return document.fullscreenElement || document.body; };
     var svg;
     var point;
     var target;
@@ -21,14 +21,22 @@ function d3tip(config) {
         if (!node) {
             return;
         }
-        rootElement.appendChild(node);
+        rootElement().appendChild(node);
     }
-    tip.rootElement = function (root) {
-        if (root == null)
-            return rootElement;
-        rootElement = root;
-        return tip;
-    };
+    function getScrollPosition() {
+        if (document.fullscreenElement) {
+            return {
+                scrollTop: document.fullscreenElement.scrollTop,
+                scrollLeft: document.fullscreenElement.scrollLeft
+            };
+        }
+        else {
+            return {
+                scrollTop: rootElement().scrollTop || document.documentElement.scrollTop,
+                scrollLeft: rootElement().scrollLeft || document.documentElement.scrollLeft
+            };
+        }
+    }
     // Public - show the tooltip on the screen
     //
     // Returns a tip
@@ -47,8 +55,7 @@ function d3tip(config) {
         var nodel = getNodeEl();
         var i = directions.length;
         var coords;
-        var scrollTop = document.documentElement.scrollTop || rootElement.scrollTop;
-        var scrollLeft = document.documentElement.scrollLeft || rootElement.scrollLeft;
+        var _a = getScrollPosition(), scrollTop = _a.scrollTop, scrollLeft = _a.scrollLeft;
         nodel
             .html(content + '<span class="d3-tip__pin"></span>')
             .style({ opacity: 1, "pointer-events": "all", display: "block" });
@@ -170,7 +177,7 @@ function d3tip(config) {
     function direction_n() {
         var bbox = getScreenBBox();
         // check if the tooltip will go overflow right side and left side of the page
-        var screenRect = rootElement.getBoundingClientRect();
+        var screenRect = rootElement().getBoundingClientRect();
         if (bbox.n.x + node.offsetWidth / 2 > screenRect.width) {
             var diff = bbox.n.x + node.offsetWidth / 2 - screenRect.width;
             node.children[node.children.length - 1].style.left =
@@ -268,7 +275,7 @@ function d3tip(config) {
         if (node === null) {
             node = initNode();
             // re-add node to DOM
-            rootElement.appendChild(node);
+            rootElement().appendChild(node);
         }
         return d3.select(node);
     }
