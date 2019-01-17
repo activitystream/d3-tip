@@ -31,5 +31,8 @@
   },
   "peerDependencies": {
     "d3": "3"
+  },
+  "dependencies": {
+    "d3": "3"
   }
 }

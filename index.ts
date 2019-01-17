@@ -19,7 +19,7 @@ export default function d3tip<T>(config: TipOptions = {}) {
   let offset: OffsetFunction<T> = d3_tip_offset
   let html: HtmlFunction<T> = d3_tip_html
   let node = initNode()
-  const rootElement = config.rootElement || document.body
+  let rootElement = config.rootElement || document.body
   let svg: SVGSVGElement
   let point: DOMPoint
   let target: SVGElement
@@ -35,6 +35,12 @@ export default function d3tip<T>(config: TipOptions = {}) {
       return
     }
     rootElement.appendChild(node)
+  }
+
+  tip.rootElement = function(root?: HTMLElement) {
+    if (root == null) return rootElement
+    rootElement = root
+    return tip
   }
 
   // Public - show the tooltip on the screen
